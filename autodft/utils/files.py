@@ -3,49 +3,35 @@ import sys
 import glob
 
 
-def log_files(dirs: list[str]) -> list[str]:
-    """Takes a sequence of directory names and returns a dictionary of
-    directories to .log files"""
+# CONSTANTS
+INDENT = ' ' * 3
 
-    dirs = [d for d in dirs if os.path.isdir(d)]
+
+def print_indent(msg: str) -> None:
+    """Prints an indented message"""
+
+    for line in msg.splitlines():
+        print(INDENT + line)
+
+
+def log_files(dirs: list[str] = None) -> list[str]:
+    """Takes a sequence of directory names and returns a dictionary of
+    directories to .log files. If no directories are given, the current
+    directory is used (denoted as '.')"""
+
+    dirs = ['.'] if dirs is None else [d for d in dirs if os.path.isdir(d)]
     logfile_dict = {}
 
     for d in dirs:
-        logfiles = files_in_dir('.log', directory=d)
-        if logfiles:
-            logfile_dict[d] = logfiles
+        logfiles_in_dir = [x for x in os.listdir(d) if x.endswith('.log')]
+        logfiles_in_dir.sort(key=lambda x: (molname_from_log(x), filenum(x)))
+        if logfiles_in_dir:
+            logfile_dict[d] = logfiles_in_dir
     if not logfile_dict:
-        print('')
-        print('  No .log files in the specified directory(s)')
-        print('')
-        sys.exit(0)
+        print('\n  No .log files in the specified directory(s)\n')
+        sys.exit()
     logfile_dict = dict(sorted(logfile_dict.items()))
     return logfile_dict
-
-
-def log_files_cwd() -> list[str]:
-    """Returns a list of .log files in the current directory.
-    
-    For consistent output with log_files(), this list is given as the value
-    of a dictionary whose key is the current directory (given as '.')"""
-
-    logfiles = files_in_dir('.log')
-    if not logfiles:
-        print('')
-        print('  No .log files in the current directory')
-        print('')
-        sys.exit(0)
-    return {'.': logfiles}
-
-    
-def files_in_dir(extension: str, directory: str=None):
-    """Returns an ordered list of numbered files with the given extension.
-    For example: moleculename-conf1.log, moleculename-conf2.log, etc.
-    Looks in current directory if none specified"""
-    
-    files = [x for x in os.listdir(directory) if x.endswith(extension)]
-    files.sort(key=lambda x: (filebase(x), filenum(x)))
-    return files
 
 
 def filenum(filename: str) -> int:
@@ -55,7 +41,7 @@ def filenum(filename: str) -> int:
     Example: filenum('Ni1a-conf2.log') # returns 2 """
     
     root = filename.split('.')[0]
-    root = root.split('(lowest)')[0]
+    root = root.removesuffix('(lowest)')
     num = ''
     for char in root[::-1]:
         if not char.isdigit():
@@ -68,32 +54,13 @@ def filenum(filename: str) -> int:
         raise FileWithoutNumberEndingError()
 
 
-def filebase(filename: str) -> str:
-    """Returns the root of a file name with the following removed:
-        -the extension if any
-        -'(lowest)' at the end of the file name (excluding the extension)
-        -a number suffix at the end of the file name
-    
-    Example: filebase('Ni1a-conf2.log') # returns 'Ni1a-conf'
-    Example: filebase('Ni1a-conf5(lowest).log') # returns 'Ni1a-conf' """
+def molname_from_log(filename: str) -> str:
+    """"Returns the molecule name from a .log file name formatted
+    as molname-confxx.log."""
 
-    filename = filename.replace('(lowest).log', '.log')
-    filename = filename.removesuffix('(lowest)')
     root = filename.split('.')[0]
-    num = ''
-    try:
-        num = str(filenum(filename))
-    except FileWithoutNumberEndingError:
-        pass
-    return root.removesuffix(num)
-
-
-def molname_from_log(log: str) -> str:
-    """Returns the molecule name from a .log file name formatted
-    as molname-confxx.log"""
-    
-    base = filebase(log)
-    return base.removesuffix('-conf')
+    num = str(filenum(filename))
+    return root.removesuffix(num).removesuffix('-conf')
 
 
 def glob_dirs(dirs: list[str]) -> list[str]:

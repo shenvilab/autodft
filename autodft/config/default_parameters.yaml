@@ -41,11 +41,7 @@ gaussian_jobs:                                # Dashes indicate beginning of dat
 
 
 goodvibes:
-  add_g_kcalmol: true                         # Add free energy in kcal/mol to the .csv file
-  add_grel_kcalmol: true                      # Add free energy (relative) in kcal/mol to the .csv file
   conc: '1'                                   # Concentration (mol/L)
   f_cutoff: '100'                             # Frequency cutoff (cm-1)
-  mark_lowest: true                           # Mark the lowest free energy structure in the .csv file
   qs: truhlar                                 # Quasiharmonic oscillator approximation method
-  rename_lowest: true                         # Rename the .log file of the lowest free energy structure
-
+  keywords: ''                                # Additional keywords

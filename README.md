@@ -112,5 +112,4 @@ Options:
 **Example:**
 ```
 gstatus.py test* -a -g custom_filename.csv -o custom_summary_filename.csv
-
 ```

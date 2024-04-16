@@ -65,37 +65,51 @@ def find_redundant(logfiles: list[str]) -> list[str]:
     return redundant_files
 
 
-def valid(filename):
-    """Returns True if the Gaussian job terminated normally"""
-
+def is_gaussian_logfile(filename):
+    """Returns True if the file name is one of a Gaussian log file"""
+    
     if not filename.lower().endswith('.log'):
         return False
 
     with open(filename) as f:
-        lines = f.readlines()
-        gaussian_job = 'Entering Gaussian System' in lines[0]
-        normal_termination = 'Normal termination' in lines[-1]
-        return gaussian_job and normal_termination
+        return 'Entering Gaussian System' in f.readline()
+
+
+def normal_termination(filename):
+    """Returns True if the Gaussian job terminated normally"""
+
+    if not is_gaussian_logfile:
+        return False
+
+    with open(filename) as f:
+        return 'Normal termination' in f.readlines()[-1]
+
+
+def error_termination(filename):
+    """Returns True if the Gaussian job terminated with an error"""
+    
+    with open(filename) as f:
+        return 'Error termination' in f.read()
 
 
 def has_linked_jobs(filename):
     """Returns True if the .log file contains at least one linked job"""
     
-    if not valid(filename):
+    if not normal_termination(filename):
         raise InvalidGaussianLogFileError()
     
     with open(filename) as f:
         data = f.read()
     n_jobs = data.count('Entering Link 1')
     return n_jobs > 1
-    
+
 
 def optimized_mols(logfiles):
     """Read optimized structures from a list of Gaussian .log files.
     Returns a list of rdkit molecules for the optimized structures,
     and whether the molecule contains polar Hs only."""
 
-    files = [f for f in logfiles if valid(f)]
+    files = [f for f in logfiles if normal_termination(f)]
     opt_mols = {}
 
     for f in files:

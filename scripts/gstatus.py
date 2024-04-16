@@ -2,7 +2,7 @@
 
 import argparse
 
-from autodft.utils.files import log_files, log_files_cwd, glob_dirs
+from autodft.utils.files import log_files, glob_dirs, print_indent
 
 
 # CONSTANTS
@@ -36,7 +36,7 @@ def status(logfile: str, folder: str = '.') -> str:
     is_scan = False
     max_found = False
     energies = []
-    energy = 0.00
+    energy = None
 
     logfile_path = f'{folder}/{logfile}'
     with open(logfile_path) as f:
@@ -46,7 +46,7 @@ def status(logfile: str, folder: str = '.') -> str:
                 opt_step_number = '-'
                 if is_scan:
                     energies.append(energy)
-                    energy = 0.00
+                    energy = None
             if 'Step number' in line:
                 opt_step_number = line.split()[2]
             if 'Maximum Force' in line:
@@ -77,7 +77,7 @@ def status(logfile: str, folder: str = '.') -> str:
     jobs_completed = '-' if not jobs_completed else jobs_completed
 
     if is_scan:
-        if energy != 0.00:  # Append energy of last structure to list, even of optimization of that structure has not yet completed
+        if energy is not None:  # Append energy of last structure to list, even of optimization of that structure has not yet completed
             energies.append(energy)
         if len(energies) >= 2:
             dE_signs = [e2 - e1 > 0 for e1, e2 in zip(energies, energies[1:])]
@@ -117,13 +117,6 @@ def print_footer() -> None:
     print('')
 
 
-def print_indent(msg: str) -> None:
-    """Prints an indented message"""
-
-    for line in msg.splitlines():
-        print(INDENT + line)
-
-
 def main() -> None:
     """Print status of all .log files in the user-specified folder"""
 
@@ -131,7 +124,7 @@ def main() -> None:
     dirs = glob_dirs(args.dirs)
 
     status_msgs = []
-    logs = log_files(dirs) if dirs else log_files_cwd()
+    logs = log_files(dirs)
     for folder, files in logs.items():
         status_msgs += [status(file, folder=folder) for file in files]
 

@@ -6,7 +6,6 @@ from autodft.config.config import Config
 from autodft.helpers.crest_job import CrestJobFromSmiles
 from autodft.helpers.gaussian_inputfile import GaussianInputWriter
 from autodft.helpers.gaussian_manager import GaussianManager
-# from autodft.helpers.goodvibes_data import goodvibes_analysis # TODO: Delete this if okay
 from autodft.utils.autodft_utils import input_data, write_autodft_parameters, cleanup
 
 
@@ -57,12 +56,8 @@ def main():
             **config.crest)
         logging.info('Finished CREST job')
 
-        # Submit Gaussian jobs
+        # Set up and run Gaussian jobs
         gsubmitter.submit_from_crest_confs(crest_job=crest_job)
-
-        # Process jobs with Goodvibes
-        # has_linked = len(inputs['gaussian_jobs']) > 1
-        # goodvibes_analysis(molname, linked=has_linked, **config.goodvibes)
 
     except Exception:
         logging.exception('AutoDFT terminated with an error\n\n')

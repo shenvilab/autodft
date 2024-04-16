@@ -139,10 +139,10 @@ class GaussianJob:
         """Returns whitespace-delimited strings for the elements below and
         above the atomic number cutoff"""
 
-        light = [e for e in elements if pt.elements.symbol(
-            e).number <= self.ecp_max_lowlevel_atomicnum]
-        heavy = [e for e in elements if pt.elements.symbol(
-            e).number > self.ecp_max_lowlevel_atomicnum]
+        light = [e for e in elements if pt.elements.symbol(e).number
+                                        <= self.ecp_max_lowlevel_atomicnum]
+        heavy = [e for e in elements if pt.elements.symbol(e).number
+                                        > self.ecp_max_lowlevel_atomicnum]
         light, heavy = ' '.join(light), ' '.join(heavy)
         return light, heavy
 
