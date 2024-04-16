@@ -118,6 +118,33 @@ gstatus.py test* -a -g custom_filename.csv -o custom_summary_filename.csv
 
 ## Additional information
 
+### Getting SMILES strings
+Draw the molecule in ChemDraw and highlight it. In the top menu:
+**Edit > Copy as > SMILES**. Or use a keyboard shortcut
+(**PC: Ctrl + Alt + C, Mac: Option + Command + C**).
+
+#### Points of caution regarding SMILES strings
+
+It's safer to draw the molecule in a 2-dimensional representation to help
+ensure that stereochemistry is assigned properly. For fused rings, it's often
+safest to draw the stereochemistry of hydrogens/substituents at the ring
+junction, rather than to use endocyclic bonds.
+
+Be especially careful about specifying stereochemistry when you have highly
+bridged systems:
+
+![stereo_example1](images/stereo_example1.png)
+
+Be careful about the directionality of wedges. Opposite directionality
+corresponds to opposite stereochemistry:
+
+![stereo_example2](images/stereo_example2.png)
+
+In certain cases, stereochemistry may be misintepreted as being at heteroatoms,
+which can ultimately lead to invalid structures. Pay attention to any ChemDraw warnings:
+
+![stereo_example3](images/stereo_example3.png)
+
 ### Customization
 If you would like, you can specify custom AutoDFT settings to use. To do this,
 copy/paste the below text, modify as desired, and save it as a file named ```config.yaml```.
@@ -176,30 +203,3 @@ Upload your ```config.yaml``` file to the computing cluster. When running
 AutoDFT in the future, you can respond ```n``` to the prompt about using the
 default configuration settings and specify the name of your ```config.yaml```
 file (make sure you are in the folder containing that file).
-
-### Getting SMILES strings
-Draw the molecule in ChemDraw and highlight it. In the top menu:
-**Edit > Copy as > SMILES**. Or use a keyboard shortcut
-(**PC: Ctrl + Alt + C, Mac: Option + Command + C**).
-
-#### Points of caution regarding SMILES strings
-
-It's safer to draw the molecule in a 2-dimensional representation to help
-ensure that stereochemistry is assigned properly. For fused rings, it's often
-safest to draw the stereochemistry of hydrogens/substituents at the ring
-junction, rather than to use endocyclic bonds.
-
-Be especially careful about specifying stereochemistry when you have highly
-bridged systems:
-
-![stereo_example1](images/stereo_example1.png)
-
-Be careful about the directionality of wedges. Opposite directionality
-corresponds to opposite stereochemistry:
-
-![stereo_example2](images/stereo_example2.png)
-
-In certain cases, stereochemistry may be misintepreted as being at heteroatoms,
-which can ultimately lead to invalid structures. Pay attention to any ChemDraw warnings:
-
-![stereo_example3](images/stereo_example3.png)
