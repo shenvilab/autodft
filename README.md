@@ -192,20 +192,14 @@ junction, rather than to use endocyclic bonds.
 Be especially careful about specifying stereochemistry when you have highly
 bridged systems:
 
-<p align="center">
 ![stereo_example1](images/stereo_example1.png)
-</p>
 
 Be careful about the directionality of wedges. Opposite directionality
 corresponds to opposite stereochemistry:
 
-<p align="center">
 ![stereo_example2](images/stereo_example2.png)
-</p>
 
 In certain cases, stereochemistry may be misintepreted as being at heteroatoms,
 which can ultimately lead to invalid structures. Pay attention to any ChemDraw warnings:
 
-<p align="center">
 ![stereo_example3](images/stereo_example3.png)
-</p>
