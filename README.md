@@ -112,34 +112,32 @@ check for .log files, separated by spaces. Wildcards can be used as part of the
 folder names. If no folders are specified, the script will look in the current
 directory.
 
-**Example:** Compile results from .log files in all folders (within the current one)
-```
-gstatus.py *
-```
-**Example:** Compile results from .log files in folders test1, test2, test3
-```
-gstatus.py test1 test2 test3
-```
-**Example:** Compile results from .log files in folders starting with test
-```
-gstatus.py test*
-```
-**Example:** Compile results from all .log files in current directory
-```
-gstatus.py
-```
-
 Options:
 - ```-a``` Use all conformations. (Default: False (use lowest only))
 - ```-g``` Specify the name of the Goodvibes output file (Default: Goodvibes_output.csv)
 - ```-o``` Specify the name of the summary file (Default: Goodvibes_output_summary.csv)
 
-**Example:**
+**Example:** Compile results from .log files in all folders (within the current one)
 ```
-gstatus.py test* -a -g custom_filename.csv -o custom_summary_filename.csv
+compile_results.py *
 ```
-
-### Additional information
+**Example:** Compile results from .log files in folders test1, test2, test3
+```
+compile_results.py test1 test2 test3
+```
+**Example:** Compile results from .log files in folders starting with test
+```
+compile_results.py test*
+```
+**Example:** Compile results from all .log files in current directory
+```
+compile_results.py
+```
+**Example:** Compile results from all conformers in directories starting with "test".
+Save Goodvibes results to custom_filename.csv and summarized results to custom_summary_filename.csv
+```
+compile_results.py test* -a -g custom_filename.csv -o custom_summary_filename.csv
+```
 
 #### Getting SMILES strings
 Draw the molecule in ChemDraw and highlight it. In the top menu:
