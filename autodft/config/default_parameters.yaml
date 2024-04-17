@@ -41,7 +41,7 @@ gaussian_jobs:                                # Dashes indicate beginning of dat
 
 
 goodvibes:
-  conc: '1'                                   # Concentration (mol/L)
+  conc: '1'                                   # Concentration (mol/L; 1 mol/L is solution phase standard state)
   f_cutoff: '100'                             # Frequency cutoff (cm-1)
   qs: truhlar                                 # Quasiharmonic oscillator approximation method
   keywords: ''                                # Additional keywords
