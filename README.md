@@ -27,14 +27,36 @@ Create a micromamba environment and install packages (answer yes when prompted)
 - ```micromamba create -n autodft```
 - ```micromamba activate autodft```
 - ```micromamba install -c conda-forge pandas goodvibes rdkit=2023.09.5 cclib xtb crest pyyaml```
-- ```git clone git@github.com:shenvilab/autodft.git```
-- ```cd autodft```
-- ```pip install .```
-- ```cd ..```
+- ```pip install autodft```
 
 ## Usage
 
-### AutoDFT submission
+### Basic usage
+Connect to computing cluster and activate the autodft environment if not
+done already:
+```
+micromamba activate autodft
+```
+
+Start running AutoDFT (then answer the on-screen prompts):
+```
+run_autodft.py
+```
+
+Check the detailed status of Gaussian jobs:
+```
+gstatus.py *
+```
+
+Compile key thermodynamic data for lowest energy conformers:
+```
+compile_results.py *
+```
+
+
+### Additional details
+
+#### AutoDFT submission
 This is performed using the ```run_autodft.py``` script, which takes molecules as 
 SMILES strings. Alternatively, this can be performed using ```run_autodft_xyz.py```,
 which takes an .xyz files of molecules as input, which is preferred for
@@ -58,12 +80,13 @@ Use of ```run_autodft_xyz.py``` is analogously done with:
 run_autodft_xyz.py
 ```
 
-### Checking job status
+#### Checking job status
 The script ```gstatus.py``` is provided to help check the status of Gaussian
 jobs submitted by AutoDFT or manually. Specify the name of all folders to check
 for .log files, separated by spaces. Wildcards can be used as part of the folder
 names. If no folders are specified, the script will look in the current
-directory.
+directory. Note that an opt and freq job that both converge will be displayed
+as 2 completed optimizations, and 2 distinct sub-jobs.
 
 **Example:** See status of .log files in all folders (within the current one)
 ```
@@ -82,7 +105,7 @@ gstatus.py test*
 gstatus.py
 ```
 
-### Compiling thermodynamic data
+#### Compiling thermodynamic data
 The script ```compile_results.py``` is provided to compile the key results for
 all .log files in the specified directories. Specify the name of all folders to
 check for .log files, separated by spaces. Wildcards can be used as part of the
@@ -116,14 +139,14 @@ Options:
 gstatus.py test* -a -g custom_filename.csv -o custom_summary_filename.csv
 ```
 
-## Additional information
+### Additional information
 
-### Getting SMILES strings
+#### Getting SMILES strings
 Draw the molecule in ChemDraw and highlight it. In the top menu:
 **Edit > Copy as > SMILES**. Or use a keyboard shortcut
 (**PC: Ctrl + Alt + C, Mac: Option + Command + C**).
 
-#### Points of caution regarding SMILES strings
+##### Points of caution
 
 It's safer to draw the molecule in a 2-dimensional representation to help
 ensure that stereochemistry is assigned properly. For fused rings, it's often
@@ -131,7 +154,9 @@ safest to draw the stereochemistry of hydrogens/substituents at the ring
 junction, rather than to use endocyclic bonds.
 
 Be especially careful about specifying stereochemistry when you have highly
-bridged systems:
+bridged systems. If looking at a molecular model, make sure to view the
+bond that will be drawn as wedged/dashed from head-on as opposed to from the
+side:
 
 ![stereo_example1](images/stereo_example1.png)
 
@@ -145,7 +170,7 @@ which can ultimately lead to invalid structures. Pay attention to any ChemDraw w
 
 ![stereo_example3](images/stereo_example3.png)
 
-### Customization
+#### Custom settings
 If you would like, you can specify custom AutoDFT settings to use. To do this,
 copy/paste the below text, modify as desired, and save it as a file named ```config.yaml```.
 
