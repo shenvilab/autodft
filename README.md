@@ -54,6 +54,10 @@ Compile key thermodynamic data for lowest energy conformers:
 compile_results.py *
 ```
 
+Sample usage of ```run_autodft.py```, showing on-screen prompts (user inputs highlighted in yellow):
+
+![sample_usage1](images/sample_usage1.png)
+
 ## Additional details
 
 ### AutoDFT submission
