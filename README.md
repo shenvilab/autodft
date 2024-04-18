@@ -54,9 +54,19 @@ Compile key thermodynamic data for lowest energy conformers:
 compile_results.py *
 ```
 
+### Examples of what you'll see
+
 Sample usage of ```run_autodft.py```, showing on-screen prompts (user inputs highlighted in yellow):
 
 ![sample_usage1](images/sample_usage1.png)
+
+Sample output of ```gstatus.py```:
+
+![sample_usage2](images/sample_usage2.png)
+
+Sample output of ```compile_results.py``` (summary section only):
+
+![sample_usage3](images/sample_usage3.png)
 
 ## Additional details
 
@@ -182,6 +192,12 @@ which can ultimately lead to invalid structures. Pay attention to any ChemDraw w
 ### Custom settings
 If you would like, you can specify custom AutoDFT settings to use. To do this,
 copy/paste the below text, modify as desired, and save it as a file named ```config.yaml```.
+The text following the '#' symbols are descriptive comments and do not affect the settings.
+
+Upload your ```config.yaml``` file to the computing cluster. When running
+AutoDFT in the future, you can respond ```n``` to the prompt about using the
+default configuration settings and specify the name of your ```config.yaml```
+file (make sure you are in the folder containing the ```config.yaml``` file).
 
 ```
 autodft_flow:         
@@ -232,8 +248,3 @@ goodvibes:
   qs: truhlar                                 # Quasiharmonic oscillator approximation method
   keywords: ''                                # Additional keywords
 ```
-
-Upload your ```config.yaml``` file to the computing cluster. When running
-AutoDFT in the future, you can respond ```n``` to the prompt about using the
-default configuration settings and specify the name of your ```config.yaml```
-file (make sure you are in the folder containing that file).
