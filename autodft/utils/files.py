@@ -19,7 +19,7 @@ def log_files(dirs: list[str] = None) -> list[str]:
     directories to .log files. If no directories are given, the current
     directory is used (denoted as '.')"""
 
-    dirs = ['.'] if dirs is None else [d for d in dirs if os.path.isdir(d)]
+    dirs = ['.'] if not dirs else [d for d in dirs if os.path.isdir(d)]
     logfile_dict = {}
 
     for d in dirs:
@@ -36,7 +36,7 @@ def log_files(dirs: list[str] = None) -> list[str]:
 
 def filenum(filename: str) -> int:
     """For a file name that has a number before the extension,
-    returns the number.
+    returns the number. Otherwise returns None.
     
     Example: filenum('Ni1a-conf2.log') # returns 2 """
     
@@ -51,16 +51,16 @@ def filenum(filename: str) -> int:
     try:
         return int(num)
     except ValueError:
-        raise FileWithoutNumberEndingError()
+        return None
 
 
 def molname_from_log(filename: str) -> str:
-    """"Returns the molecule name from a .log file name formatted
-    as molname-confxx.log."""
+    """"Returns the molecule name from a .log file name.
+    If a label '-confxx' is present, it is removed."""
 
     root = filename.split('.')[0]
-    num = str(filenum(filename))
-    return root.removesuffix(num).removesuffix('-conf')
+    num = filenum(filename)
+    return root if num is None else root.removesuffix(f'-conf{num}')
 
 
 def glob_dirs(dirs: list[str]) -> list[str]:
@@ -73,7 +73,3 @@ def glob_dirs(dirs: list[str]) -> list[str]:
     return match_dirs
     
     
-class FileWithoutNumberEndingError(Exception):
-    """Raised when the file name (not including the extension) does not
-    end with a number"""
-    pass
