@@ -56,7 +56,7 @@ compile_results.py *
 
 Sample usage of ```run_autodft.py```, showing on-screen prompts (user inputs highlighted in yellow):
 
-![sample_usage1](images/sample_usage1.png)
+<img src="images/sample_usage1.png" alt="sample_usage1" width="100%">
 
 ## Additional details
 
