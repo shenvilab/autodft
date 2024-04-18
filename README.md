@@ -18,7 +18,9 @@ Open a terminal window: Macs can use the built-in Terminal program, and PCs
 can use the built-in Windows Terminal program. Connect to the computing cluster:
 - ```ssh username@garibaldi.scripps.edu```
 
-Install the micromamba package manager if not already installed:
+Install the micromamba package manager if not already installed.
+(Note: The more common miniconda package manager can also be used, but is
+blocked by firewalls at Scripps Research)
 - ```curl -Ls https://micro.mamba.pm/api/micromamba/linux-64/latest | tar -xvj bin/micromamba```
 - ```./bin/micromamba shell init -s bash -p ~/micromamba```
 - ```source ~/.bashrc```
@@ -29,9 +31,8 @@ Create a micromamba environment and install packages (answer yes when prompted)
 - ```micromamba install -c conda-forge pandas goodvibes rdkit=2023.09.5 cclib xtb crest pyyaml```
 - ```pip install autodft```
 
-## Usage
+## Basic Usage
 
-### Basic usage
 Connect to computing cluster and activate the autodft environment if not
 done already:
 ```
@@ -53,10 +54,9 @@ Compile key thermodynamic data for lowest energy conformers:
 compile_results.py *
 ```
 
+## Additional details
 
-### Additional details
-
-#### AutoDFT submission
+### AutoDFT submission
 This is performed using the ```run_autodft.py``` script, which takes molecules as 
 SMILES strings. Alternatively, this can be performed using ```run_autodft_xyz.py```,
 which takes an .xyz files of molecules as input, which is preferred for
@@ -80,7 +80,7 @@ Use of ```run_autodft_xyz.py``` is analogously done with:
 run_autodft_xyz.py
 ```
 
-#### Checking job status
+### Checking job status
 The script ```gstatus.py``` is provided to help check the status of Gaussian
 jobs submitted by AutoDFT or manually. Specify the name of all folders to check
 for .log files, separated by spaces. Wildcards can be used as part of the folder
@@ -105,7 +105,7 @@ gstatus.py test*
 gstatus.py
 ```
 
-#### Compiling thermodynamic data
+### Compiling thermodynamic data
 The script ```compile_results.py``` is provided to compile the key results for
 all .log files in the specified directories. Specify the name of all folders to
 check for .log files, separated by spaces. Wildcards can be used as part of the
@@ -139,12 +139,19 @@ Save Goodvibes results to custom_filename.csv and summarized results to custom_s
 compile_results.py test* -a -g custom_filename.csv -o custom_summary_filename.csv
 ```
 
-#### Getting SMILES strings
+### Getting SMILES strings
 Draw the molecule in ChemDraw and highlight it. In the top menu:
 **Edit > Copy as > SMILES**. Or use a keyboard shortcut
 (**PC: Ctrl + Alt + C, Mac: Option + Command + C**).
 
-##### Points of caution
+Charged species and radicals are both acceptable. Radicals should contain no more
+than one unpaired electron.
+
+**Limitations:** Use of SMILES strings is poorly suited for metal complexes,
+carbenes/nitrenes, and hypervalent species (silicates, phosphoranes, sulfuranes,
+hypervalent iodine, etc.). For these, use of ```run_autodft_xyz.py``` is preferred.
+
+#### Points of caution
 
 It's safer to draw the molecule in a 2-dimensional representation to help
 ensure that stereochemistry is assigned properly. For fused rings, it's often
@@ -168,7 +175,7 @@ which can ultimately lead to invalid structures. Pay attention to any ChemDraw w
 
 ![stereo_example3](images/stereo_example3.png)
 
-#### Custom settings
+### Custom settings
 If you would like, you can specify custom AutoDFT settings to use. To do this,
 copy/paste the below text, modify as desired, and save it as a file named ```config.yaml```.
 
@@ -216,7 +223,7 @@ gaussian_jobs:                                # Dashes indicate beginning of dat
 
 
 goodvibes:
-  conc: '1'                                   # Concentration (mol/L)
+  conc: '1'                                   # Concentration (mol/L; 1 mol/L is solution phase standard state)
   f_cutoff: '100'                             # Frequency cutoff (cm-1)
   qs: truhlar                                 # Quasiharmonic oscillator approximation method
   keywords: ''                                # Additional keywords
