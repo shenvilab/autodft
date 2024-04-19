@@ -1,8 +1,11 @@
+import os
+import yaml
 from dataclasses import dataclass
-import os, yaml
+
 
 # CONSTANTS
 DEFAULT_CONFIG_FILE = 'default_parameters.yaml'
+
 
 @dataclass
 class Config:

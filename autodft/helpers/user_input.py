@@ -1,10 +1,10 @@
-from rdkit import Chem
-
-import os
 import json
+import os
 import sys
 from textwrap import dedent
 from typing import Tuple
+
+from rdkit import Chem
 
 from autodft.config.config import Config
 from autodft.utils.autodft_utils import charge_from_smiles, multiplicity_from_smiles
@@ -459,10 +459,6 @@ def write_shell_script(molname: str, program: str,
     config = Config.from_yaml(config_file)
     sh_path = f'{molname}/autodft_{molname}.sh'
     
-    # TODO: Add this back
-    #SBATCH --output=/dev/null
-    #SBATCH --error=/dev/null
-    
     with open(sh_path, 'w') as f:
         f.write(dedent(f"""\
             #!/bin/sh
@@ -472,7 +468,10 @@ def write_shell_script(molname: str, program: str,
             #SBATCH --cpus-per-task={config.autodft_flow['processors']}
             #SBATCH --mem={config.autodft_flow['mem']}
             #SBATCH --time={config.autodft_flow['time']}
+            #SBATCH --output=/dev/null
+            #SBATCH --error=/dev/null
             #SBATCH --job-name={molname[-8:]}
+            
             
             {program}
             """))

@@ -1,11 +1,12 @@
+import logging
+import os
+import subprocess
+
+from dataclasses import dataclass
+from textwrap import dedent
+
 from rdkit import Chem
 from rdkit.Chem import AllChem
-
-import subprocess
-import os
-import logging
-from textwrap import dedent
-from dataclasses import dataclass
 
 from autodft.utils.autodft_utils import charge_from_smiles, multiplicity_from_smiles
 

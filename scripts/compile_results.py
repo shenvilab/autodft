@@ -1,13 +1,13 @@
 #!/usr/bin/python3
 
-import pandas as pd
-import numpy as np
-
 import argparse
-import subprocess
 import os
+import subprocess
 from dataclasses import dataclass
 from io import StringIO
+
+import numpy as np
+import pandas as pd
 
 from autodft.config.config import Config
 from autodft.utils.files import glob_dirs, log_files, \
@@ -23,15 +23,15 @@ AU_TO_KCAL = 627.509541
 def cmdline_parser() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument(dest='dirs', nargs='*', action='store',
-                        help='Folder(s) to run script on.')
+        help='Folder(s) to run script on.')
     parser.add_argument('-a', '--all', dest='use_all', action='store_true', default=0,
-                        help='Optional: Compile all structures from each folder, not just the lowest energy ones')
+        help='Optional: Compile all structures from each folder, not just the lowest energy ones')
     parser.add_argument('-o', '--output', dest='summary_file', action='store', default='Goodvibes_output_summary.csv',
-                        help='Name of .csv file to write summarized Goodvibes data to')
+        help='Name of .csv file to write summarized Goodvibes data to')
     parser.add_argument('-g', '--gv_output', dest='gv_file', action='store', default='Goodvibes_output.csv',
-                        help='Optional: Name of Goodvibes output file. Default: Goodvibes_output.csv')
+        help='Optional: Name of Goodvibes output file. Default: Goodvibes_output.csv')
     parser.add_argument('-c', '--config', dest='config_file', action='store', default=None,
-                        help='Optional: Name of .config file contianing goodvibes settings')
+        help='Optional: Name of .config file contianing goodvibes settings')
     return parser.parse_args()
 
 
@@ -212,8 +212,7 @@ def main() -> None:
                                keywords=gv_config['keywords'],
                                gv_file=gv_file,
                                lowest_confs_only=lowest_confs_only,
-                               summary_file=summary_file)    
-    print('\nRunning Goodvibes...\n')
+                               summary_file=summary_file)
     summarizer.run_goodvibes()
     print('\nSummary of Goodvibes results:\n')
     summarizer.summarize()

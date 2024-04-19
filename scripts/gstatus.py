@@ -13,7 +13,7 @@ DASHES = '-' * 75
 def cmdline_parser():
     parser = argparse.ArgumentParser()
     parser.add_argument(dest='dirs', nargs='*', action='store',
-                        help='Folders(s) to run script on, separated by spaces. Use * for wildcard. If none, will use current directory.')
+        help='Folders(s) to run script on, separated by spaces. Use * for wildcard. If none, will use current directory.')
     return parser.parse_args()
 
 

@@ -1,10 +1,10 @@
-from rdkit import Chem
-from rdkit.Chem import Descriptors
-
-import os
 import json
+import os
 import subprocess
 import sys
+
+from rdkit import Chem
+from rdkit.Chem import Descriptors
 
 from autodft.config.config import Config
 

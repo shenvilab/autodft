@@ -1,8 +1,8 @@
-import periodictable as pt
-
 from dataclasses import dataclass
-from typing import Tuple
 from textwrap import dedent
+from typing import Tuple
+
+import periodictable as pt
 
 
 @dataclass(kw_only=True)

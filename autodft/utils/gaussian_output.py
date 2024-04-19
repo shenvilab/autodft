@@ -1,10 +1,10 @@
+import itertools
+import logging
+import os
+
 import cclib
 from rdkit import Chem
 from rdkit.Chem import AllChem, rdDetermineBonds
-
-import os
-import logging
-import itertools
 
 
 logger = logging.getLogger(__name__)
