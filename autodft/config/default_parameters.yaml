@@ -9,7 +9,6 @@ crest:
   method: gfn2                                # Method
   nprocshared: 16                             # Number of processors
   rm_extra_files: true                        # Remove extra CREST files
-  script: run_crest.sh                        # Script name
   solvent: ''                                 # Solvent (do not include --gbsa flag)
   time: '6:00:00'                             # Wall time
   keywords: ''                                # Additional keywords
@@ -20,7 +19,6 @@ gaussian_input:
   maxjobs: 10                                 # Maximum number of jobs to submit
   mem: 12gb                                   # Memory per job
   nprocshared: 12                             # Processors per job
-  script: run_gaussian.sh                     # Script name
   time: '24:00:00'                            # Wall time per job
   write_chk: false                            # Whether to write and keep .chk files. For linked jobs, .chk files
                                               # will always be written, but this decides whether they are kept

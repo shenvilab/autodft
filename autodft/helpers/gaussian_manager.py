@@ -12,6 +12,10 @@ from autodft.helpers.gaussian_inputfile import MolInfo, GaussianInputWriter
 logger = logging.getLogger(__name__)
 
 
+# CONSTANTS
+GAUSSIAN_SCRIPT = 'run_gaussian.sh'
+
+
 @dataclass(kw_only=True)
 class GaussianManager:
     """A class that manages the submission of Gaussian jobs"""
@@ -26,7 +30,6 @@ class GaussianManager:
     nprocshared: int = 12
     mem: str = '12gb'
     time: str = '24:00:00'
-    script: str = 'run_gaussian.sh'
     write_chk: bool = False
 
     submitted_comfiles: list[str] = None
@@ -58,7 +61,7 @@ class GaussianManager:
         self.submitted_comfiles = comfiles[:n_to_submit]
 
         # Submit job
-        subprocess.run(['sbatch', '-W', self.script])
+        subprocess.run(['sbatch', '-W', GAUSSIAN_SCRIPT])
 
         # Handle extraneous files
         logger.info('The submitted Gaussian jobs have completed.')
@@ -69,7 +72,7 @@ class GaussianManager:
     def write_script(self, n_to_submit: str) -> None:
         """Writes a shell script to submit an array job to SLURM"""
 
-        with open(self.script, 'w') as f:
+        with open(GAUSSIAN_SCRIPT, 'w') as f:
             f.write(dedent(f"""\
                 #!/bin/sh
                 

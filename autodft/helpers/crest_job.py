@@ -14,6 +14,10 @@ from autodft.utils.autodft_utils import charge_from_smiles, multiplicity_from_sm
 logger = logging.getLogger(__name__)
 
 
+# CONSTANTS
+CREST_SCRIPT = 'run_crest.sh'
+
+
 @dataclass(kw_only=True)
 class CrestJob:
     """A class that can create, submit, and process a CREST job from
@@ -49,7 +53,6 @@ class CrestJob:
     
     rm_extra_files: bool = True
     rm_xyzfile: bool = False
-    script: str = 'run_crest.sh'
     
 
     # Defined in __post_init__
@@ -75,7 +78,7 @@ class CrestJob:
         if self.keywords is not None:
             crest_command += f' {self.keywords}'
 
-        with open(self.script, 'w') as f:
+        with open(CREST_SCRIPT, 'w') as f:
             f.write(dedent(f"""\
                            #!/bin/sh
                            
@@ -94,7 +97,7 @@ class CrestJob:
         """Submit a CREST job to the computing cluster"""
 
         logger.info('Submitting CREST job to SLURM...')
-        subprocess.run(['sbatch', '-W', self.script])
+        subprocess.run(['sbatch', '-W', CREST_SCRIPT])
         
 
     def cleanup(self) -> None:
