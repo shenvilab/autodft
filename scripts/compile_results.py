@@ -143,13 +143,19 @@ class GV_Summarizer:
     def report(self) -> None:
         """Print and write summarized Goodvibes data for completed Gaussian jobs"""
         
+        # Write message to file
         if self.summary_df is None:
-            msg = 'None of the .log files terminated normally'
+            msg = 'None of the .log files terminated normally\n'
             print_indent(msg)
             with open(self.summary_file, 'w') as f:
                 f.write(msg + '\n')
             return
         
+        with open(self.summary_file, 'w') as f:
+            csv_string = self.summary_df.to_csv(index=False)
+            f.write(csv_string + '\n')
+        
+        # Print message to console
         dashes = '*' * 70
         template_header = '{:<45}{:>9}{:>16}'
         template_data = '{:<45}{:>9}{:>16.6f}'
@@ -161,9 +167,7 @@ class GV_Summarizer:
             name, im_freq, g = row
             im_freq = im_freq if not np.isnan(im_freq) else ''
             print_indent(template_data.format(name, im_freq, g))
-        print_indent(dashes)
-        
-        self.summary_df.to_csv(self.summary_file, index=False)
+        print_indent(dashes + '\n')
         
     def report_failed(self) -> None:
         """Print and write information about any incomplete/failed Gaussian jobs"""
@@ -173,15 +177,17 @@ class GV_Summarizer:
         warning = ''
         
         if incomplete:
-            warning += '\nThe following jobs did not complete and were not considered:\n'
+            warning += 'The following jobs did not complete and were not considered:\n'
             for log_path in incomplete:
                 warning += f'   {log_path.split("/")[-1]}\n'
+            warning += '\n'
         if errored:
-            warning += '\nThe following jobs errored and were not considered:\n'
+            warning += 'The following jobs errored and were not considered:\n'
             for log_path in errored:
                 warning += f'   {log_path.split("/")[-1]}\n'
+            warning += '\n'
 
-        print_indent(warning)        
+        print_indent(warning.removesuffix('\n'))
         with open(self.summary_file, 'a') as f:
             f.write(warning)
         
