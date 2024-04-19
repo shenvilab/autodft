@@ -12,6 +12,8 @@ def print_indent(msg: str) -> None:
 
     for line in msg.splitlines():
         print(INDENT + line)
+    if msg.endswith('\n'):
+        print('')
 
 
 def log_files(dirs: list[str] = None) -> list[str]:
