@@ -66,12 +66,17 @@ class GV_Summarizer:
 
         return {'completed': completed, 'incomplete': incomplete, 'errored': errored}
 
-    
     def run_goodvibes(self) -> None:
         """Runs goodvibes with the specified options"""
         
-        # Check for consistent linked jobs
         completed_jobs = self.log_paths['completed']
+        
+        if not completed_jobs:
+            with open(self.gv_file, 'w') as f:
+                f.write('None of the .log files terminated normally\n')
+            return
+        
+        # Check for consistent presence of linked jobs
         has_linked = [has_linked_jobs(x) for x in completed_jobs]
         consistent_linked = all([x == has_linked[0] for x in has_linked])
         if not consistent_linked:
@@ -84,6 +89,7 @@ class GV_Summarizer:
                    '--imag', '--csv', '--output', 'temp']
         command += self.keywords.split()
         command += ['--spc', 'link'] if linked else []
+        print('')
         subprocess.run(command)
         os.replace('Goodvibes_temp.csv', self.gv_file)
     
@@ -91,6 +97,9 @@ class GV_Summarizer:
         """Creates a DataFrame containing only the key thermodynamic data:
         molecule name, imaginary frequencies, G (kcal/mol with all
         corrections applied)"""
+        
+        if not self.log_paths['completed']:
+            return
         
         results = self.read_gv_csv()
         cols = list(results)
@@ -132,27 +141,15 @@ class GV_Summarizer:
         return df
 
     def report(self) -> None:
-        """Print and write the summarized Goodvibes data"""
+        """Print and write summarized Goodvibes data for completed Gaussian jobs"""
         
         if self.summary_df is None:
-            raise NoResultsToReportError()
+            msg = 'None of the .log files terminated normally'
+            print_indent(msg)
+            with open(self.summary_file, 'w') as f:
+                f.write(msg + '\n')
+            return
         
-        # Generate messages about incomplete/failed jobs
-        incomplete = self.log_paths['incomplete']
-        errored = self.log_paths['errored']
-        
-        warning = ''
-        if incomplete:
-            warning += '\nThe following jobs did not complete and were not considered:\n'
-            for log_path in incomplete:
-                warning += f'o  {log_path.split("/")[-1]}\n'
-        if errored:
-            warning += '\nThe following jobs errored and were not considered:\n'
-            for log_path in errored:
-                warning += f'o  {log_path.split("/")[-1]}\n'
-        warning += '\n' if warning else ''
-        
-        # Print messages
         dashes = '*' * 70
         template_header = '{:<45}{:>9}{:>16}'
         template_data = '{:<45}{:>9}{:>16.6f}'
@@ -162,14 +159,29 @@ class GV_Summarizer:
         print_indent(dashes)
         for row in self.summary_df.itertuples(index=False):
             name, im_freq, g = row
-            if np.isnan(im_freq):
-                im_freq = ''
+            im_freq = im_freq if not np.isnan(im_freq) else ''
             print_indent(template_data.format(name, im_freq, g))
         print_indent(dashes)
-        print_indent(warning)
-                
-        # Write results
+        
         self.summary_df.to_csv(self.summary_file, index=False)
+        
+    def report_failed(self) -> None:
+        """Print and write information about any incomplete/failed Gaussian jobs"""
+        
+        incomplete = self.log_paths['incomplete']
+        errored = self.log_paths['errored']        
+        warning = ''
+        
+        if incomplete:
+            warning += '\nThe following jobs did not complete and were not considered:\n'
+            for log_path in incomplete:
+                warning += f'   {log_path.split("/")[-1]}\n'
+        if errored:
+            warning += '\nThe following jobs errored and were not considered:\n'
+            for log_path in errored:
+                warning += f'   {log_path.split("/")[-1]}\n'
+
+        print_indent(warning)        
         with open(self.summary_file, 'a') as f:
             f.write(warning)
         
@@ -186,11 +198,6 @@ class GV_Summarizer:
 class InconsistentLinkedJobsError(Exception):
     """Raised when some .log files contain linked Gaussian jobs but
     others do not"""
-    pass
-
-
-class NoResultsToReportError(Exception):
-    """Raised when there are no summarized Goodvibes results to report"""
     pass
 
 
@@ -217,6 +224,7 @@ def main() -> None:
     print('\nSummary of Goodvibes results:\n')
     summarizer.summarize()
     summarizer.report()
+    summarizer.report_failed()
     
 if __name__ == '__main__':
     main()
