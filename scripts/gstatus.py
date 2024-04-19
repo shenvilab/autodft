@@ -96,8 +96,7 @@ def status(logfile: str, folder: str = '.') -> str:
 def print_header() -> None:
     """Prints the header"""
 
-    print('')
-    print_indent(DASHES)
+    print_indent('\n' + DASHES)
     print_indent('{:<23}{:>16}{:>8}{:>8}{:>8}{:>12}'.format(
         'File', 'Opts', 'Jobs', 'Jobs', 'Opt', 'Converged?'))
     print_indent('{:<23}{:>16}{:>8}{:>8}{:>8}{:>12}'.format(
@@ -113,8 +112,7 @@ def print_footer() -> None:
         'Convergence info: max force, RMS force, max displacement, RMS displacement')
     print_indent(
         'For scan jobs: Star (*) indicates that an energy maximum has been found')
-    print_indent(DASHES)
-    print('')
+    print_indent(DASHES + '\n')
 
 
 def main() -> None:
