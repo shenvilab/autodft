@@ -4,13 +4,13 @@ autodft_flow:                           # Settings for 'chaperone' job
   time: '30:00:00'                      # Wall time (should be at least the sum of wall times for the CREST and Gaussian jobs)
 
 crest:
-  method: gfn2                          # Method
+  method: gfn2                          # Method (for available options, see: https://crest-lab.github.io/crest-docs/page/documentation/keywords.html)
   solvent: ''                           # Solvent (do not include --gbsa flag) (for available solvents, see: https://xtb-docs.readthedocs.io/en/latest/gbsa.html#parameterized-solvents)
   mem: 2gb                              # Memory
   nprocshared: 12                       # Number of processors
   time: '6:00:00'                       # Wall time
   rm_extra_files: true                  # Remove extra CREST files  
-  keywords: ''                          # Additional keywords
+  keywords: ''                          # Additional keywords (see: https://crest-lab.github.io/crest-docs/page/documentation/keywords.html)
 
 gaussian_input:
   version: '16'                         # Version of Gaussian (09 or 16)
@@ -21,8 +21,8 @@ gaussian_input:
   write_chk: false                      # Whether to write and keep .chk files. Always written if there are linked jobs, but this decides whether they are kept
 
 gaussian_jobs:                          # Dashes indicate beginning of data for a job (can add or remove jobs as desired)
-- functional: B3LYP                     # Functional
-  basisset: GENECP                      # Basis set
+- functional: B3LYP                     # Functional (for options, see: https://gaussian.com/dft/)
+  basisset: GENECP                      # Basis set (for options, see: https://gaussian.com/basissets/) (write GENECP for split basis set) 
   route: Opt Freq SCF=XQC               # Route line (for linked jobs, do not add geom=allcheck guess=read (added automatically))
   ecp_basisset_light: 6-31G(d)          # For split basis sets, the basis set for light atoms (write null if not applicable)
   ecp_basisset_heavy: SDD               # For split basis sets, the basis set for heavy atoms (write null if not applicable)
@@ -38,4 +38,4 @@ goodvibes:
   conc: '1'                             # Concentration (mol/L; 1 mol/L is solution phase standard state)
   f_cutoff: '100'                       # Frequency cutoff (cm-1) for quasiharmonic oscillator approximation
   qs: truhlar                           # Quasiharmonic oscillator approximation method
-  keywords: ''                          # Additional keywords
+  keywords: ''                          # Additional keywords (see: https://goodvibespy.readthedocs.io/en/latest/source/README.html#using-goodvibes)
