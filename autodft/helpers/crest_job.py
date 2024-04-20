@@ -164,7 +164,6 @@ class CrestJobFromSmiles:
     keywords: str = None
     
     rm_extra_files: bool = True
-    script: str = 'run_crest.sh'
 
     # Defined in __post_init__
     charge: int = None
