@@ -58,7 +58,11 @@ compile_results.py *
 
 Sample usage of ```run_autodft.py```, showing on-screen prompts (user inputs highlighted in yellow):
 
-![sample_usage1](images/sample_usage1.png)
+![sample_usage1a](images/sample_usage1a.png)
+
+Specifying custom level of theory with ```run_autodft.py```:
+
+![sample_usage1b](images/sample_usage1b.png)
 
 Sample output of ```gstatus.py```:
 
@@ -190,9 +194,10 @@ which can ultimately lead to invalid structures. Pay attention to any ChemDraw w
 ![stereo_example3](images/stereo_example3.png)
 
 ### Custom settings
-If you would like, you can specify custom AutoDFT settings to use. To do this,
-copy/paste the below text, modify as desired, and save it as a file named ```config.yaml```.
-The text following the '#' symbols are descriptive comments and do not affect the settings.
+If you would like, you can specify custom AutoDFT settings to use (including
+DFT level of theory). To do this, copy/paste the below text, modify as desired,
+and save it as a file named ```config.yaml```. The text following the '#'
+symbols are descriptive comments and do not affect the settings.
 
 Upload your ```config.yaml``` file to the computing cluster. When running
 AutoDFT in the future, you can respond ```n``` to the prompt about using the
@@ -200,51 +205,45 @@ default configuration settings and specify the name of your ```config.yaml```
 file (make sure you are in the folder containing the ```config.yaml``` file).
 
 ```
-autodft_flow:         
-  mem: 256mb                                  # Memory (for 'chaperone' job)
-  processors: 1                               # Number of processors (for 'chaperone' job)
-  time: '30:00:00'                            # Wall time (for 'chaperone' job). Should be at least the sum of
-                                              # wall times for the CREST and Gaussian jobs
-
+autodft_flow:                          # Settings for 'chaperone' job
+  mem: 256mb                           # Memory
+  processors: 1                        # Number of processors
+  time: '30:00:00'                     # Wall time. Should be at least the sum of wall times for the CREST and Gaussian jobs
+  
 crest:
-  mem: 12gb                                   # Memory
-  method: gfn2                                # Method
-  nprocshared: 16                             # Number of processors
-  rm_extra_files: true                        # Remove extra CREST files
-  script: run_crest.sh                        # Script name
-  solvent: ''                                 # Solvent (do not include --gbsa flag)
-  time: '6:00:00'                             # Wall time
-  keywords: ''                                # Additional keywords
-
+  mem: 12gb                            # Memory
+  method: gfn2                         # Method
+  nprocshared: 16                      # Number of processors
+  rm_extra_files: true                 # Remove extra CREST files
+  solvent: ''                          # Solvent (do not include --gbsa flag)
+  time: '6:00:00'                      # Wall time
+  keywords: ''                         # Additional keywords
 
 gaussian_input:
-  version: '16'                               # Version of Gaussian (09 or 16)
-  maxjobs: 10                                 # Maximum number of jobs to submit
-  mem: 12gb                                   # Memory per job
-  nprocshared: 12                             # Processors per job
-  script: run_gaussian.sh                     # Script name
-  time: '24:00:00'                            # Wall time per job
-  write_chk: false                            # Whether to write and keep .chk files. For linked jobs, .chk files
-                                              # will always be written, but this decides whether they are kept
+  version: '16'                        # Gaussian version (09 or 16)
+  maxjobs: 10                          # Maximum number of jobs to submit
+  mem: 12gb                            # Memory per job
+  nprocshared: 12                      # Processors per job
+  time: '24:00:00'                     # Wall time per job
+  write_chk: false                     # Whether to write and keep .chk files (Always written with linked jobs but this decides whether they are kept)
 
-gaussian_jobs:                                # Dashes indicate beginning of data for a job (can add or remove jobs as desired)
-- basisset: GENECP                            # Basis set
-  ecp_basisset_heavy: SDD                     # For split basis sets, the basis set for heavy atoms
-  ecp_basisset_light: 6-31G(d)                # For split basis sets, the basis set for light atoms
-  ecp_cutoff: 36                              # For split basis sets, the maximum atomic number for light atoms
-  functional: B3LYP                           # Functional
-  route: Opt Freq SCF=XQC                     # Route line (for linked jobs, do not add geom=allcheck guess=read)
-- basisset: def2TZVP
+gaussian_jobs:                         # Dashes indicate beginning of each job (can add or remove jobs as desired)
+- functional: B3LYP                    # Functional
+  basisset: GENECP                     # Basis set
+  route: Opt Freq SCF=XQC              # Route line (for linked jobs, do not add geom=allcheck guess=read (added automatically))
+  ecp_basisset_heavy: SDD              # For split basis sets, the basis set for heavy atoms (write null if not applicable)
+  ecp_basisset_light: 6-31G(d)         # For split basis sets, the basis set for light atoms (write null if not applicable)
+  ecp_cutoff: 36                       # For split basis sets, the maximum atomic number for light atoms  (write null if not applicable)
+- functional: M062X
+  basisset: def2TZVP
+  route: ''
   ecp_basisset_heavy: null
   ecp_basisset_light: null
   ecp_cutoff: null
-  functional: M062X
-  route: ''
-
 
 goodvibes:
-  conc: '1'                                   # Concentration (mol/L; 1 mol/L is solution phase standard state)
-  f_cutoff: '100'                             # Frequency cutoff (cm-1)
-  qs: truhlar                                 # Quasiharmonic oscillator approximation method
-  keywords: ''                                # Additional keywords
+  conc: '1'                            # Concentration (mol/L; 1 mol/L is solution phase standard state)
+  f_cutoff: '100'                      # Frequency cutoff (cm-1)
+  qs: truhlar                          # Quasiharmonic oscillator approximation method
+  keywords: ''                         # Additional keywords
 ```
