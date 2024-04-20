@@ -207,45 +207,46 @@ your ```config.yaml``` file when prompted (make sure you are in the folder
 containing the ```config.yaml``` file).
 
 ```
-autodft_flow:                          # Settings for 'chaperone' job
-  mem: 256mb                           # Memory
-  processors: 1                        # Number of processors
-  time: '30:00:00'                     # Wall time. Should be at least the sum of wall times for the CREST and Gaussian jobs
-  
+autodft_flow:                           # Settings for 'chaperone' job
+  mem: 128mb                            # Memory
+  processors: 1                         # Number of processors
+  time: '30:00:00'                      # Wall time (should be at least the sum of wall times for the CREST and Gaussian jobs)
+
 crest:
-  mem: 12gb                            # Memory
-  method: gfn2                         # Method
-  nprocshared: 16                      # Number of processors
-  rm_extra_files: true                 # Remove extra CREST files
-  solvent: ''                          # Solvent (do not include --gbsa flag)
-  time: '6:00:00'                      # Wall time
-  keywords: ''                         # Additional keywords
+  method: gfn2                          # Method
+  solvent: ''                           # Solvent (do not include --gbsa flag) (for available solvents, see: https://xtb-docs.readthedocs.io/en/latest/gbsa.html#parameterized-solvents)
+  mem: 2gb                              # Memory
+  nprocshared: 12                       # Number of processors
+  time: '6:00:00'                       # Wall time
+  rm_extra_files: true                  # Remove extra CREST files  
+  keywords: ''                          # Additional keywords
 
 gaussian_input:
-  version: '16'                        # Gaussian version (09 or 16)
-  maxjobs: 10                          # Maximum number of jobs to submit
-  mem: 12gb                            # Memory per job
-  nprocshared: 12                      # Processors per job
-  time: '24:00:00'                     # Wall time per job
-  write_chk: false                     # Whether to write and keep .chk files (Always written with linked jobs but this decides whether they are kept)
+  version: '16'                         # Version of Gaussian (09 or 16)
+  maxjobs: 10                           # Maximum number of jobs to submit
+  mem: 2gb                              # Memory per job
+  nprocshared: 12                       # Processors per job
+  time: '24:00:00'                      # Wall time per job
+  write_chk: false                      # Whether to write and keep .chk files. Always written if there are linked jobs, but this decides whether they are kept
 
-gaussian_jobs:                         # Dashes indicate beginning of each job (can add or remove jobs as desired)
-- functional: B3LYP                    # Functional
-  basisset: GENECP                     # Basis set
-  route: Opt Freq SCF=XQC              # Route line (for linked jobs, do not add geom=allcheck guess=read (added automatically))
-  ecp_basisset_heavy: SDD              # For split basis sets, the basis set for heavy atoms (write null if not applicable)
-  ecp_basisset_light: 6-31G(d)         # For split basis sets, the basis set for light atoms (write null if not applicable)
-  ecp_cutoff: 36                       # For split basis sets, the maximum atomic number for light atoms  (write null if not applicable)
+gaussian_jobs:                          # Dashes indicate beginning of data for a job (can add or remove jobs as desired)
+- functional: B3LYP                     # Functional
+  basisset: GENECP                      # Basis set
+  route: Opt Freq SCF=XQC               # Route line (for linked jobs, do not add geom=allcheck guess=read (added automatically))
+  ecp_basisset_light: 6-31G(d)          # For split basis sets, the basis set for light atoms (write null if not applicable)
+  ecp_basisset_heavy: SDD               # For split basis sets, the basis set for heavy atoms (write null if not applicable)
+  ecp_cutoff: 36                        # For split basis sets, the maximum atomic number for light atoms (write null if not applicable)
 - functional: M062X
   basisset: def2TZVP
   route: ''
-  ecp_basisset_heavy: null
   ecp_basisset_light: null
+  ecp_basisset_heavy: null
   ecp_cutoff: null
-
+  
 goodvibes:
-  conc: '1'                            # Concentration (mol/L; 1 mol/L is solution phase standard state)
-  f_cutoff: '100'                      # Frequency cutoff (cm-1)
-  qs: truhlar                          # Quasiharmonic oscillator approximation method
-  keywords: ''                         # Additional keywords
+  conc: '1'                             # Concentration (mol/L; 1 mol/L is solution phase standard state)
+  f_cutoff: '100'                       # Frequency cutoff (cm-1) for quasiharmonic oscillator approximation
+  qs: truhlar                           # Quasiharmonic oscillator approximation method
+  keywords: ''                          # Additional keywords
+
 ```
