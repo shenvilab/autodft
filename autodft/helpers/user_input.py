@@ -147,7 +147,8 @@ def config_from_user() -> str:
     """Get configuration file to use for autodft job, or use default
     if not specified"""
 
-    use_default = y_or_n('  o  Use default autodft settings? (y/n):')
+    print('  o  Use default autodft settings for CREST,')    
+    use_default = y_or_n('       computational resources, etc.? (y/n):')
     if use_default:
         return None
 
