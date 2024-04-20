@@ -5,7 +5,7 @@ with open('README.md') as f:
 
 setup(
     name='autodft',
-    version='1.0.0',
+    version='1.0.1',
     author='Shenvi Lab',
     author_email='sting@scripps.edu',
     url='https://github.com/shenvilab/autodft',
