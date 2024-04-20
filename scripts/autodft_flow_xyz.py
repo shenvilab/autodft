@@ -37,12 +37,14 @@ def main():
             nprocshared=gaussian_config['nprocshared'],
             mem=gaussian_config['mem'],
             write_chk=gaussian_config['write_chk'])
+        logging.info('Initialized GaussianInputWriter.')
         gsubmitter = GaussianManager(
             molname=molname,
             charge=inputs['charge'],
             multiplicity=inputs['multiplicity'],
             gwriter=gwriter,
             **gaussian_config)
+        logging.info('Initialized GaussianManager.')
 
         # Set up and run CREST job
         crest_job = CrestJob(

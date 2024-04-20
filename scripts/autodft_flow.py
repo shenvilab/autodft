@@ -39,22 +39,20 @@ def main():
             nprocshared=gaussian_config['nprocshared'],
             mem=gaussian_config['mem'],
             write_chk=gaussian_config['write_chk'])
-        logging.info('Initialized GaussianInputWriter')
+        logging.info('Initialized GaussianInputWriter.')
         gsubmitter = GaussianManager(molname=molname,
             charge=inputs['charge'],
             multiplicity=inputs['multiplicity'],
             gwriter=gwriter,
             **gaussian_config)
-        logging.info('Initialized GaussianManager')
+        logging.info('Initialized GaussianManager.')
 
         # Set up and run CREST job
-        logging.info('Running CREST job')
         crest_job = CrestJobFromSmiles(
             molname=molname,
             smiles=inputs['smiles'],
             e_cutoff=inputs['e_cutoff'],
             **config.crest)
-        logging.info('Finished CREST job')
 
         # Set up and run Gaussian jobs
         gsubmitter.submit_from_crest_confs(crest_job=crest_job)
