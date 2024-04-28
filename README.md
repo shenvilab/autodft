@@ -196,15 +196,16 @@ which can ultimately lead to invalid structures. Pay attention to any ChemDraw w
 ### Custom settings
 If you would like, you can specify custom AutoDFT settings to use (including
 DFT level of theory). This is recommended if you routinely preform calculations
-at a different level of theory. To do this, copy/paste the below text, modify
-as desired, and save it as a file named ```config.yaml```. The text following
-the '#' symbols are descriptive comments and do not affect the settings.
+at a different level of theory. To do this, copy/paste the below text, which
+contains the default AutoDFT settings. Then, modify as desired, and save 
+as a new file named ```config.yaml```. The text following the '#' symbols are
+descriptive comments and do not affect the settings.
 
 Upload your ```config.yaml``` file to the computing cluster. When running
 AutoDFT in the future, you can respond ```n``` to the prompt about using the
-default settings for CREST, resources, etc. Then, provide the name of
-your ```config.yaml``` file when prompted (make sure you are in the folder
-containing the ```config.yaml``` file).
+default settings for CREST, resources, etc. Then, type ```config.yaml``` 
+when prompted (make sure you are in the folder containing the ```config.yaml``` file).
+
 
 ```
 autodft_flow:                           # Settings for 'chaperone' job
