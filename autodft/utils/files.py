@@ -2,6 +2,8 @@ import glob
 import os
 import sys
 
+from autodft.utils.gaussian_output import is_gaussian_logfile
+
 
 # CONSTANTS
 INDENT = ' ' * 3
@@ -18,17 +20,18 @@ def print_indent(msg: str) -> None:
 
 def log_files(dirs: list[str] = None) -> list[str]:
     """Takes a sequence of directory names and returns a dictionary of
-    directories to .log files. If no directories are given, the current
-    directory is used (denoted as '.')"""
+    directories to Gaussian .log files. If no directories are given, the
+    current directory is used (denoted as '.')"""
 
     dirs = ['.'] if not dirs else [d for d in dirs if os.path.isdir(d)]
     logfile_dict = {}
 
     for d in dirs:
-        logfiles_in_dir = [x for x in os.listdir(d) if x.endswith('.log')]
+        logfiles_in_dir = [x for x in os.listdir(d) if is_gaussian_logfile(f'{d}/{x}')]
         logfiles_in_dir.sort(key=lambda x: (molname_from_log(x), filenum(x)))
         if logfiles_in_dir:
             logfile_dict[d] = logfiles_in_dir
+    
     if not logfile_dict:
         print('\n  No .log files in the specified directory(s)\n')
         sys.exit()
