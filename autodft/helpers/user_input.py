@@ -14,6 +14,8 @@ from autodft.utils.autodft_utils import charge_from_smiles, multiplicity_from_sm
 COL_WIDTH1 = 55
 COL_WIDTH2 = 15
 DASHES = '-' * (COL_WIDTH1 + COL_WIDTH2)
+N_PROCESSORS = 1
+MEMORY = '128mb'
 
 
 class UserInputSMILES:
@@ -466,8 +468,8 @@ def write_shell_script(molname: str, program: str,
             
             #SBATCH --nodes=1
             #SBATCH --ntasks=1
-            #SBATCH --cpus-per-task={config.autodft_flow['processors']}
-            #SBATCH --mem={config.autodft_flow['mem']}
+            #SBATCH --cpus-per-task={N_PROCESSORS}
+            #SBATCH --mem={MEMORY}
             #SBATCH --time={config.autodft_flow['time']}
             #SBATCH --output=/dev/null
             #SBATCH --error=/dev/null
