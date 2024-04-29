@@ -23,7 +23,7 @@ Install the micromamba package manager if not already installed.
 blocked by firewalls at Scripps Research)
 - ```curl -Ls https://micro.mamba.pm/api/micromamba/linux-64/latest | tar -xvj bin/micromamba```
 - ```./bin/micromamba shell init -s bash -p ~/micromamba```
-- ```source ~/.bashrc```
+- Restart the terminal window and connect to the computing cluster again
 
 Create a micromamba environment and install packages (answer yes when prompted)
 - ```micromamba create -n autodft```
