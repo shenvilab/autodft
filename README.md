@@ -208,10 +208,8 @@ when prompted (make sure you are in the folder containing the ```config.yaml``` 
 
 
 ```
-autodft_flow:                           # Settings for 'chaperone' job
-  mem: 128mb                            # Memory
-  processors: 1                         # Number of processors
-  time: '30:00:00'                      # Wall time (should be at least the sum of wall times for the CREST and Gaussian jobs)
+autodft_flow:
+  time: '30:00:00'                      # Wall time for AutoDFT (should be at least the sum of wall times for the CREST and Gaussian jobs)
 
 crest:
   method: gfn2                          # Method (for available options, see: https://crest-lab.github.io/crest-docs/page/documentation/keywords.html)
@@ -249,5 +247,4 @@ goodvibes:
   f_cutoff: '100'                       # Frequency cutoff (cm-1) for quasiharmonic oscillator approximation
   qs: truhlar                           # Quasiharmonic oscillator approximation method
   keywords: ''                          # Additional keywords (see: https://goodvibespy.readthedocs.io/en/latest/source/README.html#using-goodvibes)
-
 ```
