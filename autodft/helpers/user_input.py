@@ -118,6 +118,8 @@ class UserInputXYZ:
         """Writes the user inputs to .json configuration files"""
 
         data = vars(self).copy()
+        if data['config'] is not None:
+            data['config'] = '../' + data['config']
         mols = data.pop('mols')
         for mol in mols:
             to_export = {}
