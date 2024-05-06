@@ -21,6 +21,8 @@ def main():
     # Get user inputs and configuration settings
     inputs = input_data()
     molname = inputs['molname']
+    
+    # Get all other settings from .yaml config file
     config_file = inputs['config']
     config = Config.from_yaml(config_file)
     gaussian_config = config.gaussian_input
