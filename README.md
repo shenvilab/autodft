@@ -209,14 +209,14 @@ when prompted (make sure you are in the folder containing the ```config.yaml``` 
 
 ```
 autodft_flow:
-  time: '30:00:00'                      # Wall time for AutoDFT (should be at least the sum of wall times for the CREST and Gaussian jobs)
+  time: '48:00:00'                      # Wall time for AutoDFT (should be at least the sum of wall times for the CREST and Gaussian jobs)
 
 crest:
   method: gfn2                          # Method (for available options, see: https://crest-lab.github.io/crest-docs/page/documentation/keywords.html)
   solvent: ''                           # Solvent (do not include --gbsa flag) (for available solvents, see: https://xtb-docs.readthedocs.io/en/latest/gbsa.html#parameterized-solvents)
   mem: 2gb                              # Memory
-  nprocshared: 12                       # Number of processors
-  time: '6:00:00'                       # Wall time
+  nprocshared: 6                        # Number of processors
+  time: '12:00:00'                       # Wall time
   rm_extra_files: true                  # Remove extra CREST files  
   keywords: ''                          # Additional keywords (see: https://crest-lab.github.io/crest-docs/page/documentation/keywords.html)
 
@@ -224,8 +224,8 @@ gaussian_input:
   version: '16'                         # Version of Gaussian (09 or 16)
   maxjobs: 10                           # Maximum number of jobs to submit
   mem: 2gb                              # Memory per job
-  nprocshared: 12                       # Processors per job
-  time: '24:00:00'                      # Wall time per job
+  nprocshared: 6                        # Processors per job
+  time: '36:00:00'                      # Wall time per job
   write_chk: false                      # Whether to write and keep .chk files. Always written if there are linked jobs, but this decides whether they are kept
 
 gaussian_jobs:                          # Dashes indicate beginning of data for a job (can add or remove jobs as desired)
